@@ -28,7 +28,7 @@ DEBUG = False
 # ggfm_dbs_project/settings.py
 ALLOWED_HOSTS = [
     'ggfmdbms.vercel.app', # Replace with your actual Heroku app domain
-    '.vercel.app',              # Allows subdomains of herokuapp.com
+    '.vercel.app', '.now.sh'             # Allows subdomains of herokuapp.com
     'https://ggfmdbms.vercel.app/',      # If you add a custom domain later
     '127.0.0.1',                   # For local development
     'localhost',                   # For local development
