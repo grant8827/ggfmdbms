@@ -23,12 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-+pz7w@8zr03a23=his&q-*6o)jps#xwj67zgcla^-o!mhd=f=h"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [] # For local development
-# When deploying, you'll add your actual domain names and server IP here
-#ALLOWED_HOSTS = ['your_domain.com', 'www.your_domain.com', 'your_server_ip_address', '127.0.0.1', 'localhost']
-
+# ggfm_dbs_project/settings.py
+ALLOWED_HOSTS = [
+    'ggfmdbms.vercel.app', # Replace with your actual Heroku app domain
+    '.vercel.app',              # Allows subdomains of herokuapp.com
+         # If you add a custom domain later
+    '127.0.0.1',                   # For local development
+    'localhost',                   # For local development
+]
 # Application definition
 
 INSTALLED_APPS = [
