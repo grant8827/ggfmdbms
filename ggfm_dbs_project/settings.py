@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-+pz7w@8zr03a23=his&q-*6o)jps#xwj67zgcla^-o!mhd=f=h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost'] # For local development
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost' 'vercel.app'] # For local development
 # When deploying, you'll add your actual domain names and server IP here
 #ALLOWED_HOSTS = ['your_domain.com', 'www.your_domain.com', 'your_server_ip_address', '127.0.0.1', 'localhost']
 
