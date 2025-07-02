@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-+pz7w@8zr03a23=his&q-*6o)jps#xwj67zgcla^-o!mhd=f=h"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # ggfm_dbs_project/settings.py
 ALLOWED_HOSTS = [
