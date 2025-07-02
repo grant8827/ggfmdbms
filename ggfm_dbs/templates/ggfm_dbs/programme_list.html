@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Programmes - GGFM DBS{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-xl shadow-lg">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-gray-800">All Programmes</h2>
+        <a href="{% url 'programme_create' %}"
+           class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+            Add New Programme
+        </a>
+    </div>
+
+    {% if programmes %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider rounded-tl-lg">Title</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Start Time</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">End Time</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Location</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Host</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider rounded-tr-lg">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for programme in programmes %}
+                        <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors">
+                            <td class="py-3 px-4 text-sm text-gray-700">{{ programme.title }}</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">{{ programme.start_time|date:"M d, Y H:i" }}</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">{{ programme.end_time|default:"N/A"|date:"M d, Y H:i" }}</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">{{ programme.location|default:"N/A" }}</td>
+                            <td class="py-3 px-4 text-sm text-gray-700">{{ programme.host|default:"N/A" }}</td>
+                            <td class="py-3 px-4 text-sm text-gray-700 space-x-2 flex">
+                                <a href="{% url 'programme_detail' programme.pk %}"
+                                   class="text-blue-600 hover:text-blue-800 font-medium">View</a>
+                                <a href="{% url 'programme_update' programme.pk %}"
+                                   class="text-yellow-600 hover:text-yellow-800 font-medium">Edit</a>
+                                <a href="{% url 'programme_delete' programme.pk %}"
+                                   class="text-red-600 hover:text-red-800 font-medium">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-center text-gray-600 p-4 bg-gray-50 rounded-lg border border-gray-200">No programmes recorded yet. Click "Add New Programme" to get started!</p>
+    {% endif %}
+</div>
+{% endblock %}

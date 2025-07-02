@@ -1,0 +1,161 @@
+
+
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - GGFM DBS{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-xl shadow-lg mb-6">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">GGFM Dashboard</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-green-100 p-6 rounded-lg shadow-md border border-green-200 text-center">
+            <h3 class="text-xl font-semibold text-green-800 mb-2">Total Income</h3>
+            <p class="text-4xl font-bold text-green-700">${{ total_income|floatformat:2 }}</p>
+        </div>
+        <div class="bg-red-100 p-6 rounded-lg shadow-md border border-red-200 text-center">
+            <h3 class="text-xl font-semibold text-red-800 mb-2">Total Expenses</h3>
+            <p class="text-4xl font-bold text-red-700">${{ total_expense|floatformat:2 }}</p>
+        </div>
+        <div class="bg-blue-100 p-6 rounded-lg shadow-md border border-blue-200 text-center">
+            <h3 class="text-xl font-semibold text-blue-800 mb-2">Net Balance</h3>
+            <p class="text-4xl font-bold text-blue-700">${{ net_balance|floatformat:2 }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Programmes</h3>
+            {% if upcoming_programmes %}
+                <div class="space-y-4">
+                    {% for programme in upcoming_programmes %}
+                        <div class="bg-purple-50 p-4 rounded-lg border border-purple-200 shadow-sm">
+                            <h4 class="text-lg font-semibold text-purple-800">{{ programme.title }}</h4>
+                            <p class="text-sm text-gray-600">
+                                <span class="font-medium">When:</span> {{ programme.start_time|date:"M d, Y H:i" }}
+                                {% if programme.end_time %} - {{ programme.end_time|date:"H:i" }}{% endif %}
+                            </p>
+                            {% if programme.location %}
+                                <p class="text-sm text-gray-600"><span class="font-medium">Where:</span> {{ programme.location }}</p>
+                            {% endif %}
+                            {% if programme.host %}
+                                <p class="text-sm text-gray-600"><span class="font-medium">Host:</span> {{ programme.host }}</p>
+                            {% endif %}
+                            <a href="{% url 'programme_detail' programme.pk %}" class="text-purple-600 hover:underline text-sm mt-2 block">View Details</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-center text-gray-600 p-4 bg-gray-50 rounded-lg border border-gray-200">programmes logs.</p>
+            {% endif %}
+            <div class="mt-4 text-center">
+                <a href="{% url 'programme_list' %}" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                    View All Programmes
+                </a>
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Financial Transactions</h3>
+            {% if recent_transactions %}
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="py-2 px-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
+                                <th class="py-2 px-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Type</th>
+                                <th class="py-2 px-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Category</th>
+                                <th class="py-2 px-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transaction in recent_transactions %}
+                                <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors">
+                                    <td class="py-2 px-3 text-sm text-gray-700">{{ transaction.date|date:"M d, Y" }}</td>
+                                    <td class="py-2 px-3 text-sm font-medium {% if transaction.type == 'income' %}text-green-600{% else %}text-red-600{% endif %}">
+                                        {{ transaction.get_type_display }}
+                                    </td>
+                                    <td class="py-2 px-3 text-sm text-gray-700">{{ transaction.get_category_display }}</td>
+                                    <td class="py-2 px-3 text-sm text-gray-700">${{ transaction.amount|floatformat:2 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-center text-gray-600 p-4 bg-gray-50 rounded-lg border border-gray-200">No recent financial transactions.</p>
+            {% endif %}
+            <div class="mt-4 text-center">
+                <a href="{% url 'financial_transaction_list' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                    View All Finances
+                </a>
+            </div>
+        </div>
+    </div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="mt-8">
+        <h3 class="text-2xl font-bold text-gray-800 mb-4">To-Do Items</h3>
+        {% if recent_todo_items %}
+            <div class="space-y-3">
+                {% for item in recent_todo_items %}
+                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <h4 class="text-lg font-semibold text-yellow-800">{{ item.task }}</h4>
+                            <p class="text-sm text-gray-600">
+                                <span class="font-medium">Due:</span> {{ item.due_date|default:"N/A"|date:"M d, Y" }}
+                                <span class="ml-2 font-medium">Priority:</span> {{ item.get_priority_display }}
+                            </p>
+                        </div>
+                        <a href="{% url 'todo_detail' item.pk %}" class="text-yellow-600 hover:underline text-sm">View Details</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-600 p-4 bg-gray-50 rounded-lg border border-gray-200">No incomplete to-do items for you.</p>
+        {% endif %}
+        <div class="mt-4 text-center">
+            <a href="{% url 'todo_list' %}" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                View All To-Do Items
+            </a>
+        </div>
+    </div>
+
+    <div class="mt-8"> {# New section for Recent Commercials #}
+        <h3 class="text-2xl font-bold text-gray-800 mb-4">Commercial logs</h3>
+        {% if recent_commercials %}
+            <div class="space-y-3">
+                {% for commercial in recent_commercials %}
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 shadow-sm">
+                        <h4 class="text-lg font-semibold text-blue-800">{{ commercial.title }}</h4>
+                        <p class="text-sm text-gray-600">
+                            <span class="font-medium">Advertiser:</span> {{ commercial.advertiser }}
+                            <span class="ml-2 font-medium">Duration:</span> {{ commercial.duration_seconds }}s
+                        </p>
+                        <p class="text-sm text-gray-600">
+                            <span class="font-medium">Active:</span> {{ commercial.start_date|default:"N/A"|date:"M d, Y" }} - {{ commercial.end_date|default:"N/A"|date:"M d, Y" }}
+                        </p>
+                        <a href="{% url 'commercial_detail' commercial.pk %}" class="text-blue-600 hover:underline text-sm mt-2 block">View Details</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-600 p-4 bg-gray-50 rounded-lg border border-gray-200">No upcoming or active commercials.</p>
+        {% endif %}
+        <div class="mt-4 text-center">
+            <a href="{% url 'commercial_list' %}" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                View All Commercials
+            </a>
+        </div>
+    </div>
+</div>
+    <div class="mt-[100px] text-center w-[100%] h-[auto] p-4 mx-auto bg-gray-100 rounded-lg shadow-md border ">
+         <p class="text-center m-6">
+           Use this button to register a staff member to manage the database system.
+        </a>
+    </p>
+    <a href="{% url 'register' %}" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 ">
+                Register New User
+            </a>
+    </div>
+</div>
+{% endblock %}

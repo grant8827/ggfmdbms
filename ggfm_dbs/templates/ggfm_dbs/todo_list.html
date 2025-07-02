@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}To-Do List - GGFM DBS{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-xl shadow-lg">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-gray-800">My To-Do Items</h2>
+        <a href="{% url 'todo_create' %}"
+           class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+            Add New To-Do Item
+        </a>
+    </div>
+
+    {% if todo_items %}
+        <div class="space-y-4">
+            {% for item in todo_items %}
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm flex items-center justify-between {% if item.completed %}bg-green-50 border-green-200{% endif %}">
+                    <div>
+                        <h3 class="text-xl font-semibold {% if item.completed %}text-green-800 line-through{% else %}text-gray-800{% endif %}">{{ item.task }}</h3>
+                        {% if item.description %}
+                            <p class="text-sm text-gray-600 mt-1">{{ item.description }}</p>
+                        {% endif %}
+                        <p class="text-sm text-gray-600 mt-1">
+                            <span class="font-medium">Due:</span> {{ item.due_date|default:"N/A"|date:"M d, Y" }}
+                            <span class="ml-2 font-medium">Priority:</span>
+                            <span class="
+                                {% if item.priority == 'high' %}text-red-600{% elif item.priority == 'medium' %}text-yellow-600{% else %}text-blue-600{% endif %}
+                                font-semibold
+                            ">{{ item.get_priority_display }}</span>
+                        </p>
+                    </div>
+                    <div class="flex space-x-2 items-center">
+                        <a href="{% url 'todo_detail' item.pk %}"
+                           class="text-blue-600 hover:text-blue-800 font-medium">View</a>
+                        <a href="{% url 'todo_update' item.pk %}"
+                           class="text-yellow-600 hover:text-yellow-800 font-medium">Edit</a>
+                        <a href="{% url 'todo_delete' item.pk %}"
+                           class="text-red-600 hover:text-red-800 font-medium">Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-gray-600 p-4 bg-gray-50 rounded-lg border border-gray-200">No to-do items found. Add one to get started!</p>
+    {% endif %}
+</div>
+{% endblock %}
