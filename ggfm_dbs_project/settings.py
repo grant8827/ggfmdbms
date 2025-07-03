@@ -80,14 +80,13 @@ WSGI_APPLICATION = "ggfm_dbs_project.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": BASE_DIR / "ggfm_db",
+        "NAME": "railway",
         "USER": "postgres",
         "PASSWORD": "NIbVQFBSuhOygTOMqSqboBpkJDALaUNR",
-        "HOST": "postgres.railway.internal",
-        "PORT": "5432",
+        "HOST": "switchyard.proxy.rlwy.net",
+        "PORT": "33160",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
