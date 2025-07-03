@@ -27,9 +27,7 @@ DEBUG = False
 
 # ggfm_dbs_project/settings.py
 ALLOWED_HOSTS = [
-    'ggfmdbms.vercel.app', # Replace with your actual Heroku app domain
-    '.vercel.app', '.now.sh'             # Allows subdomains of herokuapp.com
-    'https://ggfmdbms.vercel.app/',      # If you add a custom domain later
+    '.railway.app',                # If you add a custom domain later
     '127.0.0.1',                   # For local development
     'localhost',                   # For local development
 ]
@@ -81,8 +79,12 @@ WSGI_APPLICATION = "ggfm_dbs_project.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": BASE_DIR / "ggfm_db",
+        "USER": "postgres",
+        "PASSWORD": "NIbVQFBSuhOygTOMqSqboBpkJDALaUNR",
+        "HOST": "postgres.railway.internal",
+        "PORT": "5432",
     }
 }
 
